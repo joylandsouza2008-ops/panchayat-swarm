@@ -483,7 +483,7 @@
   <!-- Demo -->
   <section class="section" id="demo">
     <h2 class="section-title">Try a conversation</h2>
-    <p class="section-sub">This is a simulated demo. Type or use the quick replies below.</p>
+    <p class="section-sub">This is a simulated demo with live voice. Type or use the quick replies below — the AI will speak the reply.</p>
 
     <div class="demo-section">
       <div class="chat-window">
@@ -527,7 +527,52 @@
     const inputEl = document.getElementById('userInput');
     const micBtn = document.getElementById('micBtn');
 
-    // Initial greeting
+    // ========== TEXT-TO-SPEECH (Web Speech API) ==========
+    let preferredVoice = null;
+    let voicesLoaded = false;
+
+    function loadVoices() {
+      const voices = speechSynthesis.getVoices();
+      if (!voices.length) return;
+
+      // Prefer Hindi voices, then Indian English, then any English
+      preferredVoice =
+        voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi')) ||
+        voices.find(v => v.lang === 'en-IN') ||
+        voices.find(v => v.name.toLowerCase().includes('hindi')) ||
+        voices.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('female')) ||
+        voices.find(v => v.lang.startsWith('en')) ||
+        voices[0];
+
+      voicesLoaded = true;
+      console.log('TTS voice selected:', preferredVoice ? preferredVoice.name + ' (' + preferredVoice.lang + ')' : 'none');
+    }
+
+    // Chrome loads voices asynchronously
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    loadVoices();
+
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+
+      // Cancel any ongoing speech so new replies take priority
+      speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = preferredVoice ? preferredVoice.lang : 'hi-IN';
+      if (preferredVoice) utterance.voice = preferredVoice;
+
+      // Slightly slower + lower pitch — better for elderly users
+      utterance.rate = 0.88;
+      utterance.pitch = 0.95;
+      utterance.volume = 1;
+
+      speechSynthesis.speak(utterance);
+    }
+
+    // Initial greeting (with voice)
     setTimeout(() => {
       addBotMessage("Namaste! Main aapka Panchayat Swarm hoon. Aap apni bhasha mein bol sakte hain — Hindi, Kannada, ya koi bhi local dialect. Kaise madad karun aaj?", "Coordinator");
     }, 600);
@@ -538,6 +583,9 @@
       div.innerHTML = `<span class="agent-tag">${agent} Agent</span>${text}`;
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      // Speak the reply
+      speak(text);
     }
 
     function addUserMessage(text) {
@@ -570,19 +618,19 @@
           addBotMessage("Samajh gaya. Aapke pair mein 3 din se dard hai. Kya sujan (swelling) bhi hai? Ya sirf dard?", "Health");
           setTimeout(() => {
             addBotMessage("Abhi ke liye aaram karein, pair upar rakh kar baithiye. Agar kal tak aaram nahi hua toh main aapke nearest PHC ka number de dunga aur appointment bhi book karwa sakta hoon. Theek hai?", "Health");
-          }, 1400);
+          }, 2200);
         } 
         else if (lower.includes('scheme') || lower.includes('sarkari') || lower.includes('yojana') || lower.includes('pension')) {
           addBotMessage("Aap kis tarah ki scheme dekhna chahte hain? Jaise: Vridha Pension, Ayushman Bharat, PM Kisan, ya kuch aur?", "Arthik");
           setTimeout(() => {
             addBotMessage("Agar aap 60 saal se upar hain toh Vridha Pension ke liye aap eligible ho sakte hain. Main aapke documents check karke application process bata sakta hoon. Kya aap batayenge aapki umar?", "Arthik");
-          }, 1300);
+          }, 2100);
         }
         else if (lower.includes('fasal') || lower.includes('kheti') || lower.includes('crop') || lower.includes('mausam')) {
           addBotMessage("Is mausam mein aapke ilake mein tomato aur chilli ki fasal acchi ho sakti hai. Lekin baarish ka dhyan rakhna hoga.", "Krishi");
           setTimeout(() => {
             addBotMessage("Agar aap bataoge aapke paas kitna zameen hai aur kaunsi fasal lagani hai, toh main exact advice + market rate bhi de sakta hoon.", "Krishi");
-          }, 1200);
+          }, 2000);
         }
         else {
           addBotMessage("Main samajh gaya. Aap health, sarkari scheme, kheti, ya kisi aur madad ke bare mein pooch sakte hain. Bilkul freely baat kijiye — main yahin hoon.", "Coordinator");
@@ -590,7 +638,7 @@
       }, 800);
     }
 
-    // Demo mic button (visual only)
+    // Demo mic button (visual only — still simulates listening)
     let listening = false;
     function toggleMic() {
       listening = !listening;
