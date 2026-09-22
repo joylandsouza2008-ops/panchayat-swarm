@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panchayat Swarm | Orbit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F8F6F1;
+      --sage: #2F5D50;
+      --sage-light: #3D7A6A;
+      --ink: #1A1F1C;
+      --muted: #5C6B63;
+      --body: #2E3A35;
+      --soft: #EDE9E0;
+      --white: #FFFFFF;
+      --card: #FFFFFF;
+      --shadow: 0 4px 20px rgba(26, 31, 28, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--body);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 246, 241, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--soft);
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--sage);
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--sage);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--sage);
+      color: white;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--sage-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--sage);
+      border: 1.5px solid var(--sage);
+    }
+
+    .btn-outline:hover {
+      background: var(--sage);
+      color: white;
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--soft);
+      color: var(--sage);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.03em;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--sage);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* How it works */
+    .section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--soft);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Demo Chat */
+    .demo-section {
+      background: var(--soft);
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      margin: 1rem 0 3rem;
+    }
+
+    .chat-window {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      max-width: 520px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      height: 480px;
+    }
+
+    .chat-header {
+      background: var(--sage);
+      color: white;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .chat-avatar {
+      width: 38px;
+      height: 38px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .chat-header-info h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .chat-header-info span {
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .msg {
+      max-width: 85%;
+      padding: 0.75rem 1rem;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg.bot {
+      background: var(--soft);
+      color: var(--body);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg.user {
+      background: var(--sage);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg .agent-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--sage);
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .chat-input-area {
+      padding: 0.9rem 1rem;
+      border-top: 1px solid var(--soft);
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      border: 1.5px solid var(--soft);
+      border-radius: 999px;
+      padding: 0.7rem 1.1rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input-area input:focus {
+      border-color: var(--sage);
+    }
+
+    .mic-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--sage);
+      color: white;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.15rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .mic-btn:hover {
+      background: var(--sage-light);
+    }
+
+    .mic-btn.listening {
+      background: #c0392b;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4); }
+      50% { box-shadow: 0 0 0 10px rgba(192, 57, 43, 0); }
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0 1rem 0.9rem;
+    }
+
+    .quick-reply {
+      background: var(--soft);
+      border: none;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: var(--sage);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .quick-reply:hover {
+      background: var(--sage);
+      color: white;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem 2.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--sage);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .nav-links a:not(.btn) {
+        display: none;
+      }
+      .hero {
+        padding: 2.5rem 1.25rem 2rem;
+      }
+      .chat-window {
+        height: 420px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">Panchayat <span>Swarm</span></div>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#demo">Try Demo</a>
+      <a href="#demo" class="btn">Start Talking</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="badge">TEAM ORBIT · ST JOSEPH ENGINEERING COLLEGE</div>
+    <h1>Your village now has a<br><em>digital council</em></h1>
+    <p>
+      Voice-first AI agents that speak your language, remember your community, 
+      and help elderly & low-literacy citizens access health, schemes & support — 
+      without any app or typing.
+    </p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn">Try the Demo</a>
+      <a href="#how" class="btn btn-outline">See how it works</a>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" id="how">
+    <h2 class="section-title">How Panchayat Swarm works</h2>
+    <p class="section-sub">One community → a council of specialized agents that work together</p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🗣️</div>
+        <h3>Just Speak</h3>
+        <p>Call or send a voice note in your local language or dialect. No app, no typing, no English needed.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h3>Agents Collaborate</h3>
+        <p>Health, Krishi, Shiksha, Arthik & Nyaya agents discuss together and give one clear answer.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧓</div>
+        <h3>Built for Elders</h3>
+        <p>Speaks slowly, patiently, confirms everything, and works on simple feature phones via call.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏘️</div>
+        <h3>Community Memory</h3>
+        <p>Remembers your village’s history, previous problems and what worked — so help gets better over time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section class="section" id="demo">
+    <h2 class="section-title">Try a conversation</h2>
+    <p class="section-sub">This is a simulated demo. Type or use the quick replies below.</p>
+
+    <div class="demo-section">
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="chat-avatar">🏛️</div>
+          <div class="chat-header-info">
+            <h4>Panchayat Swarm</h4>
+            <span>Online · Speaking Hindi + Local dialect</span>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="messages">
+          <!-- Messages will appear here -->
+        </div>
+
+        <div class="quick-replies" id="quickReplies">
+          <button class="quick-reply" onclick="sendQuick('Mere pair mein dard hai 3 din se')">Pair mein dard hai</button>
+          <button class="quick-reply" onclick="sendQuick('Sarkari scheme ke bare mein batao')">Scheme ke bare mein</button>
+          <button class="quick-reply" onclick="sendQuick('Fasal ke liye kya karun is mausam mein')">Fasal advice</button>
+        </div>
+
+        <div class="chat-input-area">
+          <input type="text" id="userInput" placeholder="Type your message or speak..." onkeydown="if(event.key==='Enter') sendMessage()" />
+          <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Voice input (demo)">🎤</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Built with ❤️ by <strong>Team Orbit</strong> · 
+      St Joseph Engineering College, Mangaluru<br>
+      <a href="https://github.com" target="_blank">View on GitHub</a>
+    </p>
+  </footer>
+
+  <script>
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('userInput');
+    const micBtn = document.getElementById('micBtn');
+
+    // Initial greeting
+    setTimeout(() => {
+      addBotMessage("Namaste! Main aapka Panchayat Swarm hoon. Aap apni bhasha mein bol sakte hain — Hindi, Kannada, ya koi bhi local dialect. Kaise madad karun aaj?", "Coordinator");
+    }, 600);
+
+    function addBotMessage(text, agent = "Coordinator") {
+      const div = document.createElement('div');
+      div.className = 'msg bot';
+      div.innerHTML = `<span class="agent-tag">${agent} Agent</span>${text}`;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function addUserMessage(text) {
+      const div = document.createElement('div');
+      div.className = 'msg user';
+      div.textContent = text;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function sendMessage() {
+      const text = inputEl.value.trim();
+      if (!text) return;
+      addUserMessage(text);
+      inputEl.value = '';
+      respond(text);
+    }
+
+    function sendQuick(text) {
+      addUserMessage(text);
+      respond(text);
+    }
+
+    function respond(userText) {
+      // Simple keyword-based responses for demo
+      const lower = userText.toLowerCase();
+
+      setTimeout(() => {
+        if (lower.includes('dard') || lower.includes('pain') || lower.includes('bukhar') || lower.includes('fever') || lower.includes('pair')) {
+          addBotMessage("Samajh gaya. Aapke pair mein 3 din se dard hai. Kya sujan (swelling) bhi hai? Ya sirf dard?", "Health");
+          setTimeout(() => {
+            addBotMessage("Abhi ke liye aaram karein, pair upar rakh kar baithiye. Agar kal tak aaram nahi hua toh main aapke nearest PHC ka number de dunga aur appointment bhi book karwa sakta hoon. Theek hai?", "Health");
+          }, 1400);
+        } 
+        else if (lower.includes('scheme') || lower.includes('sarkari') || lower.includes('yojana') || lower.includes('pension')) {
+          addBotMessage("Aap kis tarah ki scheme dekhna chahte hain? Jaise: Vridha Pension, Ayushman Bharat, PM Kisan, ya kuch aur?", "Arthik");
+          setTimeout(() => {
+            addBotMessage("Agar aap 60 saal se upar hain toh Vridha Pension ke liye aap eligible ho sakte hain. Main aapke documents check karke application process bata sakta hoon. Kya aap batayenge aapki umar?", "Arthik");
+          }, 1300);
+        }
+        else if (lower.includes('fasal') || lower.includes('kheti') || lower.includes('crop') || lower.includes('mausam')) {
+          addBotMessage("Is mausam mein aapke ilake mein tomato aur chilli ki fasal acchi ho sakti hai. Lekin baarish ka dhyan rakhna hoga.", "Krishi");
+          setTimeout(() => {
+            addBotMessage("Agar aap bataoge aapke paas kitna zameen hai aur kaunsi fasal lagani hai, toh main exact advice + market rate bhi de sakta hoon.", "Krishi");
+          }, 1200);
+        }
+        else {
+          addBotMessage("Main samajh gaya. Aap health, sarkari scheme, kheti, ya kisi aur madad ke bare mein pooch sakte hain. Bilkul freely baat kijiye — main yahin hoon.", "Coordinator");
+        }
+      }, 800);
+    }
+
+    // Demo mic button (visual only)
+    let listening = false;
+    function toggleMic() {
+      listening = !listening;
+      if (listening) {
+        micBtn.classList.add('listening');
+        micBtn.textContent = '⏹';
+        // Simulate listening then auto-send a sample
+        setTimeout(() => {
+          if (listening) {
+            toggleMic();
+            sendQuick("Mere pair mein dard hai 3 din se");
+          }
+        }, 2200);
+      } else {
+        micBtn.classList.remove('listening');
+        micBtn.textContent = '🎤';
+      }
+    }
+  </script>
+</body>
+</html>
